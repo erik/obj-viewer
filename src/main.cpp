@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
   glDepthMask(GL_TRUE);
 
   glEnable(GL_LIGHTING); 
-  GLfloat ambientLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+  GLfloat ambientLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
   GLfloat diffuseLight[] = { 0.8f, 0.8f, 0.8, 1.0f };
   GLfloat specularLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
   GLfloat position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
@@ -40,10 +40,10 @@ int main(int argc, char** argv) {
   glLoadIdentity();
   gluPerspective(90.0f, 1.0f, 1.0f, 500.0f);
 
-  
+  float xrot(0), yrot(0), zrot(0);
   float zoom = -20;
 
-  sf::Clock clock;
+  const sf::Input &input = app.GetInput();
 
   while(app.IsOpened()) {
     app.SetActive();
@@ -53,13 +53,30 @@ int main(int argc, char** argv) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
+    glPushMatrix();
+
     glTranslatef(0.0f, 0.0f, zoom);
-    glRotatef(clock.GetElapsedTime() * 20.f, 1.f, 0.f, 0.f);
-    glRotatef(clock.GetElapsedTime() * 20.f, 0.f, 1.f, 0.f);
-    glRotatef(clock.GetElapsedTime() * 20.f, 0.f, 0.f, 1.f);
+
+    glRotatef(yrot, 1.f, 0.f, 0.f);
+    glRotatef(xrot, 0.f, 1.f, 0.f);
 
     model.Render();
     
+    glPopMatrix();
+
+    if(input.IsKeyDown(sf::Key::Left)) {
+      xrot += 5;
+    }
+    if(input.IsKeyDown(sf::Key::Right)) {
+      xrot -= 5;
+    }
+    if(input.IsKeyDown(sf::Key::Up)) {
+      yrot += 5;
+    }
+    if(input.IsKeyDown(sf::Key::Down)) {
+      yrot -= 5;
+    }
+
     sf::Event event;
     while(app.PollEvent(event)) {
       if(event.Type == sf::Event::Closed) {
