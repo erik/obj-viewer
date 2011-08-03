@@ -41,9 +41,10 @@ int main(int argc, char** argv) {
 
   float xrot(0), yrot(0), zrot(0);
   float zoom = -20;
+  bool wireframe = false;
+
 
   const sf::Input &input = app.GetInput();
-
   while(app.IsOpened()) {
     app.SetActive();
     
@@ -84,6 +85,17 @@ int main(int argc, char** argv) {
         zoom += event.MouseWheel.Delta;
       } else if(event.Type == sf::Event::Resized) {
         glViewport(0, 0, event.Size.Width, event.Size.Height);
+      } else if(event.Type == sf::Event::KeyPressed) {
+        if(event.Key.Code == sf::Key::Escape) {
+          app.Close();
+        } else if(event.Key.Code == sf::Key::W) {
+          wireframe = !wireframe;
+          if(wireframe) {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+          } else {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+          }
+        }
       }
     }
 
