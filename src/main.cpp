@@ -7,7 +7,7 @@
 int main(int argc, char** argv) {
   
   Model model;
-  model.Load("models/cube.obj");
+  model.Load(argv[1]);
 
   sf::RenderWindow app(sf::VideoMode(800, 600), "OBJ Viewer", sf::Style::Default, sf::ContextSettings(32));
 
@@ -32,6 +32,8 @@ int main(int argc, char** argv) {
   glLightfv(GL_LIGHT0, GL_POSITION, position);
   
 
+  glShadeModel(GL_SMOOTH);
+
   glEnable(GL_LIGHT0);
 
   glMatrixMode(GL_PROJECTION);
@@ -39,7 +41,7 @@ int main(int argc, char** argv) {
   gluPerspective(90.0f, 1.0f, 1.0f, 500.0f);
 
   
-  float zoom = -200;
+  float zoom = -20;
 
   sf::Clock clock;
 

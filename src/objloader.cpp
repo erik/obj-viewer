@@ -8,6 +8,7 @@
 Model::Model() :
   mName("")
 {
+  mNormals.push_back(Normal(0, 0, 1));
 }
 
 void Model::Load(std::string filename) {
@@ -59,17 +60,19 @@ void Model::Load(std::string filename) {
       std::stringstream tmp(argsBuf, std::stringstream::in);
 
       for(int i = 0; i < 3; ++i) {
-        int v(0), t(0), n(0);
+        int v(0), t(0), n(1);
 
         tmp >> v;
-        tmp.ignore(2, '/');
-        // 1//2
         if(tmp.peek() == '/') {
           tmp.ignore(2, '/');
-        } else {
-          tmp >> t;
+          // 1//2
+          if(tmp.peek() == '/') {
+            tmp.ignore(2, '/');
+          } else {
+            tmp >> t;
+          }
+          tmp >> n;
         }
-        tmp >> n;
 
         if(static_cast<unsigned long>(v) < this->mVertices.size() + 1) {
           triangle.vertexIndicies[i] = v - 1;
@@ -106,6 +109,8 @@ void Model::Render() {
       Triangle face = this->mFaces[i];
       for(int j = 0; j < 3; ++j) {
         Vertex v = this->mVertices[face.vertexIndicies[j]];
+        Normal n = this->mNormals[face.normalIndicies[j]];
+        glNormal3f(n.i, n.j, n.k);
         glVertex4f(v.x, v.y, v.z, v.w);
       }
     }
