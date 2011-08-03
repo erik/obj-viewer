@@ -19,9 +19,13 @@ struct Normal {
   Normal(float _i, float _j, float _k) : i(_i), j(_j), k(_k) {}
 };
 
-struct Triangle {
-  int vertexIndicies[3];
-  int normalIndicies[3];
+struct Polygon { 
+  int numIndicies;
+
+  std::vector<int> vertexIndicies;
+  std::vector<int> normalIndicies;
+
+  Polygon() : numIndicies(0) {}
 };
 
 class Model {
@@ -30,7 +34,7 @@ class Model {
   std::vector<Vertex> mVertices;
   std::vector<Normal> mNormals;
 
-  std::vector<Triangle> mFaces;
+  std::vector<Polygon> mFaces;
 
 public:
   Model();

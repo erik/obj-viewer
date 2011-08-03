@@ -53,13 +53,15 @@ void Model::Load(std::string filename) {
 
     // face
     else if(type == "f") {
-      Triangle triangle;
+      Polygon polygon;
 
       char argsBuf[100];
       stream.getline(argsBuf, 100);
       std::stringstream tmp(argsBuf, std::stringstream::in);
 
-      for(int i = 0; i < 3; ++i) {
+      tmp.ignore(100, ' ');
+
+      for(int i = 0; !tmp.eof(); ++i) {
         int v(0), t(0), n(1);
 
         tmp >> v;
@@ -75,19 +77,20 @@ void Model::Load(std::string filename) {
         }
 
         if(static_cast<unsigned long>(v) < this->mVertices.size() + 1) {
-          triangle.vertexIndicies[i] = v - 1;
+          polygon.vertexIndicies.push_back(v - 1);
         } else {
           std::cerr << "Vertex index out of bounds: " << v << std::endl;
         }
 
         if(static_cast<unsigned long>(n) < this->mNormals.size() + 1) {
-          triangle.normalIndicies[i] = n - 1;
+          polygon.numIndicies++;
+          polygon.normalIndicies.push_back(n - 1);
         } else {
           std::cerr << "Normal index out of bounds: " << n << std::endl;
         }
       }
       
-      this->mFaces.push_back(triangle);
+      this->mFaces.push_back(polygon);
 
     }
 
@@ -103,17 +106,26 @@ void Model::Load(std::string filename) {
 }
 
 void Model::Render() {
-    glBegin(GL_TRIANGLES);
 
-    for(unsigned long i = 0; i < mFaces.size(); ++i) {
-      Triangle face = this->mFaces[i];
-      for(int j = 0; j < 3; ++j) {
-        Vertex v = this->mVertices[face.vertexIndicies[j]];
-        Normal n = this->mNormals[face.normalIndicies[j]];
-        glNormal3f(n.i, n.j, n.k);
-        glVertex4f(v.x, v.y, v.z, v.w);
-      }
+  for(unsigned long i = 0; i < mFaces.size(); ++i) {
+    Polygon face = this->mFaces[i];
+    
+    if(face.numIndicies == 3) {
+      glBegin(GL_TRIANGLES);
+    } else if(face.numIndicies == 5) {
+      glBegin(GL_QUADS);
+    } else {
+      glBegin(GL_POLYGON);
+    }
+    
+    for(int j = 0; j < face.numIndicies; ++j) {
+      Vertex v = this->mVertices[face.vertexIndicies[j]];
+      Normal n = this->mNormals[face.normalIndicies[j]];
+      
+      glNormal3f(n.i, n.j, n.k);
+      glVertex4f(v.x, v.y, v.z, v.w);
     }
 
     glEnd();
+  }
 }
