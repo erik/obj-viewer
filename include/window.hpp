@@ -6,12 +6,12 @@
 #include <SFML/Graphics.hpp>
 #include "objloader.hpp"
 
-struct WindowOptions {
+struct WindowSettings {
   float zoom;
   float xRotation, yRotation;
   bool wireframe;
 
-  WindowOptions() :
+  WindowSettings() :
     zoom(-20.0f),
     xRotation(0.0f),
     yRotation(0.0f),
@@ -25,7 +25,7 @@ private:
   sf::RenderWindow mApplication;
   Model mModel;
   const sf::Input& mInput;
-  struct WindowOptions mOptions;
+  struct WindowSettings mSettings;
 
   void InitGL();
   void UpdateInput();

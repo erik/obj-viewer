@@ -62,19 +62,19 @@ void Window::UpdateInput()
 {
 
   if(mInput.IsKeyDown(sf::Key::Left)) {
-    this->mOptions.xRotation += 5;
+    this->mSettings.xRotation += 5;
   }
 
   if(mInput.IsKeyDown(sf::Key::Right)) {
-    this->mOptions.xRotation -= 5;
+    this->mSettings.xRotation -= 5;
   }
 
   if(mInput.IsKeyDown(sf::Key::Up)) {
-    this->mOptions.yRotation += 5;
+    this->mSettings.yRotation += 5;
   }
 
   if(mInput.IsKeyDown(sf::Key::Down)) {
-    this->mOptions.yRotation -= 5;
+    this->mSettings.yRotation -= 5;
   }
 
   sf::Event event;
@@ -85,7 +85,7 @@ void Window::UpdateInput()
     }
     
     else if(event.Type == sf::Event::MouseWheelMoved) {
-      this->mOptions.zoom += event.MouseWheel.Delta;
+      this->mSettings.zoom += event.MouseWheel.Delta;
     }
 
     else if(event.Type == sf::Event::Resized) {
@@ -99,9 +99,9 @@ void Window::UpdateInput()
       }
       
       else if(event.Key.Code == sf::Key::W) {
-        this->mOptions.wireframe = !this->mOptions.wireframe;
+        this->mSettings.wireframe = !this->mSettings.wireframe;
         
-        if(this->mOptions.wireframe) {
+        if(this->mSettings.wireframe) {
           glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         } 
         else {
@@ -121,10 +121,10 @@ void Window::Draw()
 
   glPushMatrix();
 
-  glTranslatef(0.0f, 0.0f, this->mOptions.zoom);
+  glTranslatef(0.0f, 0.0f, this->mSettings.zoom);
 
-  glRotatef(this->mOptions.yRotation, 1.f, 0.f, 0.f);
-  glRotatef(this->mOptions.xRotation, 0.f, 1.f, 0.f);
+  glRotatef(this->mSettings.yRotation, 1.f, 0.f, 0.f);
+  glRotatef(this->mSettings.xRotation, 0.f, 1.f, 0.f);
 
   mModel.Render();
     
