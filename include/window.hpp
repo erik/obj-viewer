@@ -10,12 +10,19 @@ struct WindowSettings {
   float zoom;
   float xRotation, yRotation;
   bool wireframe;
+  bool lighting;
+  bool coloring;
+  bool normals;
 
   WindowSettings() :
     zoom(-20.0f),
     xRotation(0.0f),
     yRotation(0.0f),
-    wireframe(false) {
+    wireframe(false),
+    lighting(true),
+    coloring(false),
+    normals(true)
+  {
   };
   
 };

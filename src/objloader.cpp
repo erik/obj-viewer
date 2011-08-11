@@ -8,7 +8,9 @@
 #include <cstdlib>
 
 Model::Model() :
-  mName("")
+  mName(""),
+  mColorVerts(false),
+  mDrawNormals(true)
 {
   mNormals.push_back(Normal(0, 0, 1));
 }
@@ -110,7 +112,7 @@ void Model::Render() {
   char r = 0, g= 0, b= 0;
   for(unsigned long i = 0; i < mFaces.size(); ++i) {
     Polygon face = this->mFaces[i];
-    
+
     if(face.numIndicies == 3) {
       glBegin(GL_TRIANGLES);
     } else if(face.numIndicies == 4){
@@ -123,8 +125,14 @@ void Model::Render() {
       Vertex v = this->mVertices[face.vertexIndicies[j]];
       Normal n = this->mNormals[face.normalIndicies[j]];
       
-      glColor3b(r, g, b);
-      glNormal3f(n.i, n.j, n.k);
+      if(mColorVerts) {
+        glColor3b(r, g, b);
+      }
+
+      if(mDrawNormals) {
+        glNormal3f(n.i, n.j, n.k);
+      }
+
       glVertex4f(v.x, v.y, v.z, v.w);
       
       r = ++r % 128;

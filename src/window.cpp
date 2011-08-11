@@ -41,7 +41,7 @@ void Window::InitGL()
   GLfloat ambientLight[] = { 0.3f, 0.3f, 0.3f, 1.0f };
   GLfloat diffuseLight[] = { 0.5f, 0.5f, 0.5, 1.0f };
   GLfloat specularLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
-  GLfloat position1[] = { -1.5f, 1.0f, -4.0f, 1.0f };
+  GLfloat position1[] = {.5, 1., 1., 0.};
 
   // Assign created components to GL_LIGHT0
   glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
@@ -108,6 +108,26 @@ void Window::UpdateInput()
           glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         }
       }
+
+      else if(event.Key.Code == sf::Key::C) {
+        this->mSettings.coloring = !this->mSettings.coloring;
+        this->mModel.SetColorVerts(this->mSettings.coloring);
+      }
+
+      else if(event.Key.Code == sf::Key::N) {
+        this->mSettings.normals = !this->mSettings.normals;
+        this->mModel.SetDrawNormals(this->mSettings.normals);
+      }
+
+      else if(event.Key.Code == sf::Key::L) {
+        this->mSettings.lighting = !this->mSettings.lighting;
+        if(this->mSettings.lighting) {
+          glEnable(GL_LIGHTING); 
+        } else {
+          glDisable(GL_LIGHTING); 
+        }
+      }
+
     }
   }
 }

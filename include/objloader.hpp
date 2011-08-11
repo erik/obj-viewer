@@ -36,8 +36,18 @@ class Model {
 
   std::vector<Polygon> mFaces;
 
+  bool mColorVerts, mDrawNormals;
+
 public:
   Model();
+
+  void SetDrawNormals(bool v) {
+    mDrawNormals = v;
+  }
+
+  void SetColorVerts(bool v) {
+    mColorVerts = v;
+  }
 
   void Load(std::string filename);
 
