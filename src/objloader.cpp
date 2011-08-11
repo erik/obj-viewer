@@ -17,8 +17,7 @@ void Model::Load(std::string filename) {
   std::fstream file(filename.c_str(), std::fstream::in);
 
   if(file.fail()) {
-    std::cerr << "Unable to open file: " << filename << std::endl;
-    throw;
+    throw "Unable to open file: '" + filename + "'";
   }
 
   std::string line;
